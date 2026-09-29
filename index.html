@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Sentinel</title>
+<meta name="description" content="Sentinel finds the security holes in your code, explains them, fixes them, and proves the fix. CS3383 Group 15, City University of Hong Kong.">
+<meta name="theme-color" content="#16120d">
+<link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Project Sentinel">
+<meta property="og:description" content="Finds the security holes in your code, explains them, fixes them, and proves the fix.">
+<meta property="og:url" content="https://abedalrahmantech.github.io/project-sentinel/">
+<meta property="og:image" content="https://abedalrahmantech.github.io/project-sentinel/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sentinel: finds the security holes in your code, explains them, fixes them, and proves the fix.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Schibsted+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: oklch(0.17 0.012 70);
+  --ink-raised: oklch(0.22 0.014 70);
+  --ink-line: oklch(0.32 0.014 70);
+  --on-ink: oklch(0.96 0.004 70);
+  --on-ink-muted: oklch(0.76 0.01 70);
+  --bg: oklch(0.99 0 0);
+  --bg-alt: oklch(0.955 0 0);
+  --line: oklch(0.87 0 0);
+  --text: oklch(0.21 0.01 70);
+  --text-muted: oklch(0.43 0.012 70);
+  --amber: oklch(0.60 0.124 70);
+  --amber-deep: oklch(0.47 0.1 68);
+  --amber-glow: oklch(0.8 0.135 76);
+  --amber-wash: oklch(0.8 0.135 76 / 0.16);
+  --del-bg: oklch(0.955 0.03 25);
+  --del-ink: oklch(0.47 0.14 27);
+  --add-bg: oklch(0.955 0.04 150);
+  --add-ink: oklch(0.42 0.1 150);
+
+  --font-sans: "Schibsted Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  --step--1: 0.875rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.375rem;
+  --step-2: clamp(1.6rem, 1.2rem + 1.4vw, 2.2rem);
+  --step-3: clamp(2.2rem, 1.4rem + 3vw, 3.6rem);
+
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-s: 0.75rem;
+  --space-m: 1rem;
+  --space-l: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: clamp(4rem, 2.5rem + 6vw, 7.5rem);
+
+  --page: min(72rem, 100% - 2 * clamp(1rem, 4vw, 2.5rem));
+  --radius: 10px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  font-kerning: normal;
+}
+h1, h2, h3 { text-wrap: balance; margin: 0; line-height: 1.12; }
+p { margin: 0; text-wrap: pretty; }
+a { color: inherit; }
+code, pre { font-family: var(--font-mono); }
+:focus-visible { outline: 3px solid var(--amber-glow); outline-offset: 3px; border-radius: 4px; }
+.wrap { width: var(--page); margin-inline: auto; }
+.skip {
+  position: absolute; left: var(--space-m); top: -4rem; z-index: 10;
+  background: var(--amber-glow); color: var(--ink); padding: var(--space-xs) var(--space-m);
+  border-radius: 6px; font-weight: 700; text-decoration: none;
+}
+.skip:focus { top: var(--space-m); }
+
+/* ---------- Opening band ---------- */
+.band {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+.band a:focus-visible { outline-color: var(--amber-glow); }
+.nav {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-l);
+  padding-block: var(--space-l);
+}
+.brand {
+  display: inline-flex; align-items: center; gap: var(--space-s);
+  font-weight: 800; font-size: var(--step-1); letter-spacing: -0.01em; text-decoration: none;
+}
+.brand img { width: 2rem; height: 2rem; }
+.nav ul { display: flex; flex-wrap: wrap; gap: var(--space-l); list-style: none; margin: 0; padding: 0; }
+.nav ul a {
+  color: var(--on-ink-muted); text-decoration: none; font-weight: 500;
+  padding-block: var(--space-xs); display: inline-block;
+}
+.nav ul a:hover { color: var(--on-ink); }
+@media (max-width: 34rem) {
+  .nav { flex-direction: column; align-items: flex-start; gap: var(--space-2xs); }
+  .nav ul { gap: var(--space-l); }
+}
+
+.hero > *, .example > * { min-width: 0; }
+.hero {
+  display: grid; gap: var(--space-2xl); align-items: center;
+  padding-block: clamp(2.5rem, 1rem + 6vw, 6rem) clamp(3.5rem, 2rem + 6vw, 7rem);
+}
+@media (min-width: 60rem) {
+  .hero { grid-template-columns: 1.05fr 1fr; gap: clamp(2.5rem, 5vw, 5rem); }
+}
+.hero h1 {
+  font-size: var(--step-3); font-weight: 800; letter-spacing: -0.028em; line-height: 1.06;
+}
+.hero h1 .lit { color: var(--amber-glow); }
+.hero .lead {
+  margin-top: var(--space-l); font-size: var(--step-1); line-height: 1.5;
+  color: var(--on-ink-muted); max-width: 36ch; letter-spacing: 0.005em;
+}
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-m) var(--space-xl); margin-top: var(--space-xl); }
+.btn {
+  display: inline-flex; align-items: center; gap: var(--space-xs);
+  min-height: 3rem; padding: 0 var(--space-l); border-radius: 999px;
+  background: var(--amber-glow); color: var(--ink); font-weight: 700; text-decoration: none;
+  transition: background-color 200ms var(--ease-out), transform 200ms var(--ease-out);
+}
+.btn:hover { background: oklch(0.86 0.12 80); }
+.btn:active { transform: translateY(1px); }
+.link-quiet {
+  color: var(--on-ink); font-weight: 500; text-underline-offset: 0.25em; text-decoration-thickness: 1px;
+  text-decoration-color: var(--on-ink-muted); padding-block: var(--space-s);
+}
+.link-quiet:hover { text-decoration-color: var(--amber-glow); }
+.link-quiet small { color: var(--on-ink-muted); font-size: var(--step--1); }
+
+/* Code panel under watch */
+.watch {
+  position: relative; overflow: hidden;
+  background: var(--ink-raised); border: 1px solid var(--ink-line); border-radius: var(--radius);
+  box-shadow: 0 30px 60px -30px oklch(0 0 0 / 0.7);
+}
+.watch-head {
+  display: flex; justify-content: space-between; gap: var(--space-m);
+  padding: var(--space-s) var(--space-m); border-bottom: 1px solid var(--ink-line);
+  font-family: var(--font-mono); font-size: var(--step--1); color: var(--on-ink-muted);
+}
+.watch-head .state { color: var(--amber-glow); }
+.watch pre {
+  margin: 0; padding: var(--space-m) 0; font-size: var(--step--1);
+  line-height: 1.75; color: var(--on-ink); overflow-x: auto;
+}
+.watch .ln { display: block; padding-inline: var(--space-m); white-space: pre; }
+.watch .ln::before {
+  content: attr(data-n); display: inline-block; width: 2.2em; margin-right: var(--space-s);
+  color: oklch(0.64 0.01 70); text-align: right;
+}
+.watch .kw { color: oklch(0.8 0.08 250); }
+.watch .str { color: oklch(0.82 0.09 150); }
+.watch .flag { background: var(--amber-wash); box-shadow: inset 3px 0 0 var(--amber-glow); }
+.watch-notes {
+  display: grid; gap: var(--space-xs); margin: 0; padding: var(--space-m); list-style: none;
+  border-top: 1px solid var(--ink-line); font-size: var(--step--1);
+}
+.watch-notes li { display: flex; gap: var(--space-s); align-items: baseline; color: var(--on-ink-muted); }
+.watch-notes b { color: var(--amber-glow); font-family: var(--font-mono); font-weight: 600; font-size: var(--step--1); white-space: nowrap; }
+.beam {
+  position: absolute; left: 0; right: 0; top: 0; height: 5rem; pointer-events: none; opacity: 0;
+  background: linear-gradient(to bottom, transparent, oklch(0.8 0.135 76 / 0.14) 70%, oklch(0.8 0.135 76 / 0.55) 98%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .beam { animation: patrol 7s var(--ease-out) 0.4s infinite; }
+  .watch .flag { animation: flag-in 600ms var(--ease-out) 1.5s both; }
+  .watch-notes li { animation: flag-in 600ms var(--ease-out) both; }
+  .watch-notes li:nth-child(1) { animation-delay: 1.8s; }
+  .watch-notes li:nth-child(2) { animation-delay: 2s; }
+}
+@keyframes patrol {
+  0% { transform: translateY(-5rem); opacity: 0; }
+  6% { opacity: 1; }
+  38% { transform: translateY(17rem); opacity: 1; }
+  46%, 100% { transform: translateY(19rem); opacity: 0; }
+}
+@keyframes flag-in {
+  from { background-color: transparent; box-shadow: inset 0 0 0 var(--amber-glow); opacity: 0.55; }
+}
+
+/* ---------- Sections ---------- */
+section { padding-block: var(--space-3xl); }
+.alt { background: var(--bg-alt); }
+.section-head { max-width: 40rem; }
+.section-head h2 { font-size: var(--step-2); font-weight: 800; letter-spacing: -0.02em; }
+.section-head p { margin-top: var(--space-m); color: var(--text-muted); max-width: 60ch; }
+
+/* Problem */
+.problem { display: grid; gap: var(--space-2xl); align-items: start; }
+@media (min-width: 56rem) { .problem { grid-template-columns: 1.2fr 1fr; gap: var(--space-3xl); } }
+.problem .claim { font-size: var(--step-2); font-weight: 700; letter-spacing: -0.015em; line-height: 1.22; }
+.problem .claim em { font-style: normal; color: var(--amber-deep); }
+.problem .body { display: grid; gap: var(--space-m); color: var(--text-muted); max-width: 60ch; }
+.problem cite { font-style: normal; font-size: var(--step--1); color: var(--text-muted); }
+.problem cite a { color: var(--text); text-underline-offset: 0.2em; }
+
+/* Steps */
+.steps-wrap { --dot: 2.75rem; }
+.steps {
+  position: relative; list-style: none; margin: var(--space-2xl) 0 0; padding: 0;
+  display: grid; gap: var(--space-xl); counter-reset: step;
+}
+.steps li { position: relative; display: grid; grid-template-columns: var(--dot) 1fr; gap: var(--space-m); align-content: start; counter-increment: step; }
+.steps li::before {
+  content: counter(step); display: grid; place-items: center;
+  width: var(--dot); height: var(--dot); border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--text); font-weight: 800; position: relative; z-index: 1;
+}
+.steps li.human::before { background: var(--amber-glow); border-color: var(--amber-glow); color: var(--ink); }
+.steps h3 { font-size: var(--step-1); font-weight: 700; letter-spacing: -0.01em; margin-top: 0.45rem; }
+.steps p { margin-top: var(--space-xs); color: var(--text-muted); }
+.steps .loop-note { display: block; margin-top: var(--space-xs); color: var(--amber-deep); font-weight: 500; }
+.steps::before {
+  content: ""; position: absolute; left: calc(var(--dot) / 2 - 1px); top: var(--dot); bottom: var(--dot);
+  width: 2px; background: var(--line);
+}
+.steps-wrap { position: relative; }
+.loop { display: none; }
+@media (min-width: 60rem) {
+  .steps { grid-template-columns: repeat(5, 1fr); gap: var(--space-l); }
+  .steps-wrap { padding-bottom: 5rem; }
+  .steps li { grid-template-columns: 1fr; gap: var(--space-s); }
+  .steps h3 { margin-top: var(--space-xs); }
+  .steps::before { left: calc(var(--dot) / 2); right: calc(20% - var(--dot) / 2); top: calc(var(--dot) / 2 - 1px); bottom: auto; width: auto; height: 2px; }
+  .steps .loop-note { display: none; }
+  .loop {
+    --col: calc((100% - 4 * var(--space-l)) / 5 + var(--space-l));
+    display: block; position: absolute; bottom: 0.75rem; height: 3.25rem;
+    left: calc(var(--col) + var(--dot) / 2 - 1px); width: calc(2 * var(--col));
+    border: 2px dashed var(--amber); border-top: 0; border-radius: 0 0 1.25rem 1.25rem;
+  }
+  .loop::before {
+    content: ""; position: absolute; left: -7px; top: -8px;
+    border: 6px solid transparent; border-bottom: 9px solid var(--amber); border-top: 0;
+  }
+  .loop span {
+    position: absolute; left: 50%; bottom: -0.8em; transform: translateX(-50%); white-space: nowrap;
+    background: var(--bg-alt); padding-inline: var(--space-s); color: var(--amber-deep);
+    font-size: var(--step--1); font-weight: 500;
+  }
+}
+
+/* Example */
+.example { display: grid; gap: var(--space-2xl); margin-top: var(--space-2xl); align-items: start; }
+@media (min-width: 60rem) { .example { grid-template-columns: 1.25fr 1fr; } }
+.diff {
+  border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--bg);
+}
+.diff-head {
+  display: flex; justify-content: space-between; gap: var(--space-m); flex-wrap: wrap;
+  padding: var(--space-s) var(--space-m); border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono); font-size: var(--step--1); color: var(--text-muted); background: var(--bg-alt);
+}
+.diff pre { margin: 0; padding: var(--space-s) 0; font-size: var(--step--1); line-height: 1.7; overflow-x: auto; }
+.diff .ln { display: block; padding-inline: var(--space-m); white-space: pre; }
+.diff .ln::before { display: inline-block; width: 1.5em; font-weight: 600; }
+.diff .del { background: var(--del-bg); color: var(--del-ink); }
+.diff .del::before { content: "-"; }
+.diff .add { background: var(--add-bg); color: var(--add-ink); }
+.diff .add::before { content: "+"; }
+.diff .ctx::before { content: " "; }
+.report h3 { font-size: var(--step-1); font-weight: 700; }
+.report .note { margin-top: var(--space-2xs); font-size: var(--step--1); color: var(--text-muted); }
+.report dl { margin: var(--space-l) 0 0; display: grid; gap: var(--space-l); }
+.report dt { font-weight: 700; }
+.report dd { margin: var(--space-2xs) 0 0; color: var(--text-muted); }
+.report code { font-size: var(--step--1); background: var(--bg-alt); padding: 0.1em 0.35em; border-radius: 4px; color: var(--text); }
+
+/* Difference */
+.points { display: grid; gap: var(--space-2xl); margin-top: var(--space-2xl); }
+.point { display: grid; gap: var(--space-s); }
+@media (min-width: 52rem) { .point { grid-template-columns: minmax(14rem, 1fr) 1.6fr; gap: var(--space-2xl); align-items: baseline; } }
+.point h3 { font-size: var(--step-2); font-weight: 800; letter-spacing: -0.02em; }
+.point p { color: var(--text-muted); max-width: 55ch; }
+
+/* Team */
+.team { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: var(--space-xl) var(--space-l); list-style: none; margin: var(--space-2xl) 0 0; padding: 0; }
+.team li { display: flex; align-items: center; gap: var(--space-m); }
+.monogram {
+  display: grid; place-items: center; flex: none; width: 3.25rem; height: 3.25rem; border-radius: 50%;
+  background: var(--ink); color: var(--amber-glow); font-weight: 800; font-size: var(--step-1);
+}
+.team b { display: block; font-size: var(--step-1); line-height: 1.2; color: var(--text); }
+.team .role { display: block; color: var(--text-muted); font-size: var(--step--1); }
+
+/* Footer */
+footer.band { padding-block: var(--space-2xl); }
+.foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-l); }
+.foot p { color: var(--on-ink-muted); font-size: var(--step--1); max-width: 60ch; }
+.foot .status { color: var(--on-ink); }
+.foot .status b { color: var(--amber-glow); font-weight: 600; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="band">
+  <div class="wrap">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="#top" aria-label="Sentinel, back to top"><img src="assets/mark.svg" alt="" width="32" height="32">Sentinel</a>
+      <ul>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#example">Example</a></li>
+        <li><a href="#team">Team</a></li>
+      </ul>
+    </nav>
+
+    <div class="hero" id="top">
+      <div>
+        <h1>Finds the security holes in your code, explains them, fixes them, and <span class="lit">proves the fix.</span></h1>
+        <p class="lead">An agentic AI auditor for codebases. It flags vulnerabilities, writes a fix a developer can read, refactors the code on its own branch, and re-runs the scan and the tests before anyone reviews it.</p>
+        <div class="actions">
+          <a class="btn" href="#how">See how it works</a>
+          <a class="link-quiet" href="https://github.com/abedalrahmantech/sentinel">Team repository <small>(members only)</small></a>
+        </div>
+      </div>
+
+      <figure class="watch" aria-label="Sentinel scanning a Java login method and flagging two lines" style="margin:0">
+        <div class="watch-head"><span>LoginService.java</span><span class="state">2 findings</span></div>
+        <div class="beam" aria-hidden="true"></div>
+<pre tabindex="0"><code><span class="ln" data-n="12"><span class="kw">public</span> User login(String name, String password) {</span><span class="ln flag" data-n="13">    String sql = <span class="str">"SELECT * FROM users WHERE name = '"</span></span><span class="ln flag" data-n="14">        + name + <span class="str">"' AND password = '"</span> + password + <span class="str">"'"</span>;</span><span class="ln" data-n="15">    ResultSet rs = stmt.executeQuery(sql);</span><span class="ln" data-n="16">    <span class="kw">return</span> rs.next() ? map(rs) : <span class="kw">null</span>;</span><span class="ln" data-n="17">}</span></code></pre>
+        <ul class="watch-notes">
+          <li><b>CWE-89</b> User input is pasted straight into the SQL query.</li>
+          <li><b>CWE-256</b> Passwords are stored and compared as plain text.</li>
+        </ul>
+      </figure>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section aria-labelledby="problem-title">
+    <div class="wrap problem">
+      <div>
+        <h2 id="problem-title" class="claim">In security-sensitive tasks, <em>about 40%</em> of the programs GitHub Copilot wrote were vulnerable.</h2>
+      </div>
+      <div class="body">
+        <p>AI assistants now write a large share of new code, and they repeat the insecure patterns they learned from. Scanners catch many of these bugs, but they stop at a list of warnings.</p>
+        <p>Someone still has to work out which warnings are real, understand each one, write the fix, and check that the fix did not break anything else. Sentinel does that work and shows its evidence.</p>
+        <cite>Pearce et al., <a href="https://arxiv.org/abs/2108.09293">"Asleep at the Keyboard? Assessing the Security of GitHub Copilot's Code Contributions"</a>, 2021. 1,689 programs across 89 scenarios.</cite>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt" id="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="how-title">How it works</h2>
+        <p>Five steps, run as a loop. A patch only moves forward when the evidence says it should.</p>
+      </div>
+      <div class="steps-wrap">
+      <ol class="steps">
+        <li><div><h3>Scan</h3><p>Static analysis finds candidate problems. A language model reads the code around each one and drops the false alarms.</p></div></li>
+        <li><div><h3>Recommend</h3><p>For every real finding: what is wrong, how it could be exploited, and the proposed fix in plain words.</p></div></li>
+        <li><div><h3>Refactor</h3><p>Sentinel writes the patch on its own branch and keeps the change as small as it can.</p></div></li>
+        <li><div><h3>Verify</h3><p>It re-runs the scan and the tests.<span class="loop-note">If the finding is still there or a test fails, it goes back to step 2.</span></p></div></li>
+        <li class="human"><div><h3>A person approves</h3><p>A developer reads the explanation and the diff, then decides. Nothing merges on its own.</p></div></li>
+      </ol>
+      <div class="loop" aria-hidden="true"><span>scan or test fails: back to step 2</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="example" aria-labelledby="example-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="example-title">One finding, start to finish</h2>
+        <p>The login method from above, after Sentinel has been through it.</p>
+      </div>
+      <div class="example">
+        <figure class="diff" style="margin:0" aria-label="Code diff of the fix">
+          <div class="diff-head"><span>LoginService.java</span><span>sentinel/fix-login-sql-injection</span></div>
+<pre tabindex="0"><code><span class="ln ctx">public User login(String name, String password) {</span><span class="ln del">    String sql = "SELECT * FROM users WHERE name = '"</span><span class="ln del">        + name + "' AND password = '" + password + "'";</span><span class="ln del">    ResultSet rs = stmt.executeQuery(sql);</span><span class="ln del">    return rs.next() ? map(rs) : null;</span><span class="ln add">    String sql = "SELECT id, password_hash FROM users WHERE name = ?";</span><span class="ln add">    try (PreparedStatement ps = conn.prepareStatement(sql)) {</span><span class="ln add">        ps.setString(1, name);</span><span class="ln add">        ResultSet rs = ps.executeQuery();</span><span class="ln add">        if (!rs.next()) return null;</span><span class="ln add">        return BCrypt.checkpw(password, rs.getString("password_hash"))</span><span class="ln add">            ? map(rs) : null;</span><span class="ln add">    }</span><span class="ln ctx">}</span></code></pre>
+        </figure>
+
+        <div class="report">
+          <h3>The report that comes with it</h3>
+          <p class="note">What a Sentinel report will look like.</p>
+          <dl>
+            <div><dt>Finding</dt><dd>SQL injection (CWE-89) and plain-text password check (CWE-256) in <code>LoginService.login</code>, lines 13 to 14.</dd></div>
+            <div><dt>Why it matters</dt><dd>A name such as <code>' OR '1'='1' --</code> logs in as the first user in the table, and anyone who reads the database reads every password.</dd></div>
+            <div><dt>Fix</dt><dd>A parameterised query, and a comparison against a salted bcrypt hash instead of the password itself.</dd></div>
+            <div><dt>Proof</dt><dd>The re-scan no longer reports either finding, and the login tests pass on the fix branch before the pull request opens.</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt" aria-labelledby="diff-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="diff-title">What makes it different</h2>
+      </div>
+      <div class="points">
+        <div class="point"><h3>It proves its fixes.</h3><p>Every patch is re-scanned and tested before a person sees it. A fix that leaves the finding in place, or breaks a test, never reaches review.</p></div>
+        <div class="point"><h3>It explains itself.</h3><p>Each finding comes with the reason it is dangerous and the reason this fix closes it, in words a developer can check in a minute.</p></div>
+        <div class="point"><h3>People decide.</h3><p>Sentinel opens pull requests. It never merges them. Every change keeps a human owner.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="team" aria-labelledby="team-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="team-title">The team</h2>
+        <p>Group 15, CS3383 AI for Software Engineering, City University of Hong Kong.</p>
+      </div>
+      <ul class="team">
+        <li><span class="monogram" aria-hidden="true">A</span><span><b>Abed</b><span class="role">Lead Developer</span></span></li>
+        <li><span class="monogram" aria-hidden="true">E</span><span><b>Ethan</b><span class="role">AI Developer</span></span></li>
+        <li><span class="monogram" aria-hidden="true">N</span><span><b>Nimra</b><span class="role">Full-Stack Developer</span></span></li>
+        <li><span class="monogram" aria-hidden="true">J</span><span><b>Jerry</b><span class="role">Frontend Developer</span></span></li>
+        <li><span class="monogram" aria-hidden="true">R</span><span><b>Roy</b><span class="role">Backend Developer</span></span></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="band">
+  <div class="wrap foot">
+    <a class="brand" href="#top" aria-label="Sentinel, back to top"><img src="assets/mark.svg" alt="" width="32" height="32">Sentinel</a>
+    <p class="status"><b>Now:</b> writing the requirements. Semester A 2026/27.</p>
+    <p>CS3383 Group 15 · City University of Hong Kong · <a class="link-quiet" href="https://github.com/abedalrahmantech/sentinel">Team repository</a></p>
+  </div>
+</footer>
+</body>
+</html>
