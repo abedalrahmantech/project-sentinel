@@ -22,7 +22,7 @@ Sentinel closes the loop that scanners and autofix tools leave open: every fix i
 
 ## Conversion & proof
 
-- Primary action: "See how it works" (scroll to the loop). Secondary: the team repository link (members only).
+- The primary action opens the deployed Sentinel workspace. Visitors can explore a sample audit and download a PDF report. The secondary action scrolls to the terminal workflow. The team repository link is in the footer.
 - The line a visitor remembers after 10 seconds: "Finds the security holes in your code, explains them, fixes them, and proves the fix."
 - Belief ladder: AI-written code is often insecure; warnings alone do not fix anything; Sentinel fixes and proves; a human still decides.
 - Proof on hand: Pearce et al., "Asleep at the Keyboard?" (about 40% of 1,689 Copilot programs vulnerable), from the CS3383 reading list. No product metrics exist yet, so none are shown.

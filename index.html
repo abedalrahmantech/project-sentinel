@@ -328,10 +328,10 @@ footer.band { padding-block: var(--space-2xl); }
     <div class="hero" id="top">
       <div>
         <h1>Finds the security holes in your code, explains them, fixes them, and <span class="lit">proves the fix.</span></h1>
-        <p class="lead">An agentic AI auditor for codebases. It flags vulnerabilities, writes a fix a developer can read, refactors the code on its own branch, and re-runs the scan and the tests before anyone reviews it.</p>
+        <p class="lead">Audit a Java repository from the terminal and review the evidence in your browser. Explore a sample audit, import a terminal report, or check published DNS settings for a domain you verify.</p>
         <div class="actions">
-          <a class="btn" href="#how">See how it works</a>
-          <a class="link-quiet" href="https://github.com/abedalrahmantech/sentinel">Team repository <small>(members only)</small></a>
+          <a class="btn" href="https://sentinel-review-web.vercel.app/">Open Sentinel workspace</a>
+          <a class="link-quiet" href="#how">See how it works</a>
         </div>
       </div>
 
@@ -365,13 +365,13 @@ footer.band { padding-block: var(--space-2xl); }
   <section class="alt" id="how" aria-labelledby="how-title">
     <div class="wrap">
       <div class="section-head">
-        <h2 id="how-title">How it works</h2>
-        <p>Five steps, run as a loop. A patch only moves forward when the evidence says it should.</p>
+        <h2 id="how-title">How a terminal audit works</h2>
+        <p>Sentinel scans committed Java code. It checks each proposed fix on its own branch and presents the evidence for a developer to review.</p>
       </div>
       <div class="steps-wrap">
       <ol class="steps">
-        <li><div><h3>Scan</h3><p>Static analysis finds candidate problems. A language model reads the code around each one and drops the false alarms.</p></div></li>
-        <li><div><h3>Recommend</h3><p>For every real finding: what is wrong, how it could be exploited, and the proposed fix in plain words.</p></div></li>
+        <li><div><h3>Scan</h3><p>Static analysis finds candidate problems. A language model reviews the relevant code and records its assessment.</p></div></li>
+        <li><div><h3>Recommend</h3><p>For a confirmed finding, Sentinel explains the risk and proposes a fix.</p></div></li>
         <li><div><h3>Refactor</h3><p>Sentinel writes the patch on its own branch and keeps the change as small as it can.</p></div></li>
         <li><div><h3>Verify</h3><p>It re-runs the scan and the tests.<span class="loop-note">If the finding is still there or a test fails, it goes back to step 2.</span></p></div></li>
         <li class="human"><div><h3>A person approves</h3><p>A developer reads the explanation and the diff, then decides. Nothing merges on its own.</p></div></li>
@@ -385,7 +385,7 @@ footer.band { padding-block: var(--space-2xl); }
     <div class="wrap">
       <div class="section-head">
         <h2 id="example-title">One finding, start to finish</h2>
-        <p>The login method from above, after Sentinel has been through it.</p>
+        <p>An illustrative repair for the login method shown above.</p>
       </div>
       <div class="example">
         <figure class="diff" style="margin:0" aria-label="Code diff of the fix">
@@ -395,12 +395,12 @@ footer.band { padding-block: var(--space-2xl); }
 
         <div class="report">
           <h3>The report that comes with it</h3>
-          <p class="note">What a Sentinel report will look like.</p>
+          <p class="note">A sample of what a developer reviews.</p>
           <dl>
             <div><dt>Finding</dt><dd>SQL injection (CWE-89) and plain-text password check (CWE-256) in <code>LoginService.login</code>, lines 13 to 14.</dd></div>
-            <div><dt>Why it matters</dt><dd>A name such as <code>' OR '1'='1' --</code> logs in as the first user in the table, and anyone who reads the database reads every password.</dd></div>
+            <div><dt>Why it matters</dt><dd>Untrusted input can change how the database interprets the query. Plain-text password storage exposes credentials if the database is read.</dd></div>
             <div><dt>Fix</dt><dd>A parameterised query, and a comparison against a salted bcrypt hash instead of the password itself.</dd></div>
-            <div><dt>Proof</dt><dd>The re-scan no longer reports either finding, and the login tests pass on the fix branch before the pull request opens.</dd></div>
+            <div><dt>Verification</dt><dd>Sentinel re-scans the candidate and runs the project tests before presenting it for a decision.</dd></div>
           </dl>
         </div>
       </div>
@@ -415,7 +415,7 @@ footer.band { padding-block: var(--space-2xl); }
       <div class="points">
         <div class="point"><h3>It proves its fixes.</h3><p>Every patch is re-scanned and tested before a person sees it. A fix that leaves the finding in place, or breaks a test, never reaches review.</p></div>
         <div class="point"><h3>It explains itself.</h3><p>Each finding comes with the reason it is dangerous and the reason this fix closes it, in words a developer can check in a minute.</p></div>
-        <div class="point"><h3>People decide.</h3><p>Sentinel opens pull requests. It never merges them. Every change keeps a human owner.</p></div>
+        <div class="point"><h3>People decide.</h3><p>Developers review the candidate and decide whether to accept it. They can publish the branch and open a pull request on GitHub.</p></div>
       </div>
     </div>
   </section>
@@ -441,7 +441,7 @@ footer.band { padding-block: var(--space-2xl); }
   <div class="wrap foot">
     <a class="brand" href="#top" aria-label="Sentinel, back to top"><img src="assets/mark.svg" alt="" width="32" height="32">Sentinel</a>
     <p class="status"><b>Now:</b> writing the requirements. Semester A 2026/27.</p>
-    <p>CS3383 Group 15 · City University of Hong Kong · <a class="link-quiet" href="https://github.com/abedalrahmantech/sentinel">Team repository</a></p>
+    <p>CS3383 Group 15 · City University of Hong Kong · <a class="link-quiet" href="https://sentinel-review-web.vercel.app/">Open workspace</a> · <a class="link-quiet" href="https://github.com/abedalrahmantech/sentinel">Team repository</a></p>
   </div>
 </footer>
 </body>
